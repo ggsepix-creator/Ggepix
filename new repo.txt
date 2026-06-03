@@ -1,0 +1,633 @@
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+
+-- ==========================================
+-- SECTION 1: VOID INTRO (Full Screen)
+-- ==========================================
+local function runVoidIntro()
+    local introGui = Instance.new("ScreenGui")
+    introGui.Name = "VoidIntro_V2"
+    introGui.Parent = CoreGui
+    introGui.IgnoreGuiInset = true 
+
+    local background = Instance.new("Frame")
+    background.Size = UDim2.new(1, 0, 1, 0)
+    background.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+    background.BackgroundTransparency = 1 
+    background.BorderSizePixel = 0
+    background.Parent = introGui
+
+    local container = Instance.new("Frame")
+    container.Size = UDim2.new(0, 400, 0, 300)
+    container.Position = UDim2.new(0.5, 0, 0.5, 0)
+    container.AnchorPoint = Vector2.new(0.5, 0.5)
+    container.BackgroundTransparency = 1
+    container.Parent = background
+
+    local gearLabel = Instance.new("TextLabel")
+    gearLabel.Text = ""
+    gearLabel.Size = UDim2.new(0, 100, 0, 100)
+    gearLabel.Position = UDim2.new(0.5, 0, 0.2, 0)
+    gearLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+    gearLabel.BackgroundTransparency = 1
+    gearLabel.TextSize = 60
+    gearLabel.TextTransparency = 1
+    gearLabel.Parent = container
+
+    local mainTitle = Instance.new("TextLabel")
+    mainTitle.Text = "EPIX"
+    mainTitle.Size = UDim2.new(1, 0, 0.3, 0)
+    mainTitle.Position = UDim2.new(0.5, 0, 0.5, 0)
+    mainTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    mainTitle.TextTransparency = 1
+    mainTitle.BackgroundTransparency = 1
+    mainTitle.Font = Enum.Font.GothamBold
+    mainTitle.TextSize = 90
+    mainTitle.Parent = container
+
+    local subTitle = Instance.new("TextLabel")
+    subTitle.Text = "VERSION 1.0"
+    subTitle.Size = UDim2.new(1, 0, 0.1, 0)
+    subTitle.Position = UDim2.new(0.5, 0, 0.65, 0)
+    subTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    subTitle.TextColor3 = Color3.fromRGB(0, 255, 150)
+    subTitle.TextTransparency = 1
+    subTitle.BackgroundTransparency = 1
+    subTitle.Font = Enum.Font.Code
+    subTitle.TextSize = 16
+    subTitle.Parent = container
+
+    local rotationSpeed = 200
+    local rotationConnection
+    rotationConnection = RunService.RenderStepped:Connect(function(dt)
+        if gearLabel and gearLabel.Parent then
+            gearLabel.Rotation = gearLabel.Rotation + (rotationSpeed * dt)
+        else
+            rotationConnection:Disconnect()
+        end
+    end)
+
+    TweenService:Create(background, TweenInfo.new(0.8), {BackgroundTransparency = 0.1}):Play()
+    task.wait(0.3)
+    TweenService:Create(gearLabel, TweenInfo.new(0.6, Enum.EasingStyle.Back), {TextTransparency = 0, TextSize = 80}):Play()
+    task.wait(0.4)
+    TweenService:Create(mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {TextTransparency = 0, TextSize = 70}):Play()
+    task.wait(0.3)
+    TweenService:Create(subTitle, TweenInfo.new(0.8), {TextTransparency = 0, Position = UDim2.new(0.5, 0, 0.62, 0)}):Play()
+    task.wait(3)
+    local fadeOutInfo = TweenInfo.new(0.8)
+    TweenService:Create(background, fadeOutInfo, {BackgroundTransparency = 1}):Play()
+    TweenService:Create(gearLabel, fadeOutInfo, {TextTransparency = 1}):Play()
+    TweenService:Create(mainTitle, fadeOutInfo, {TextTransparency = 1}):Play()
+    TweenService:Create(subTitle, fadeOutInfo, {TextTransparency = 1}):Play()
+    task.wait(0.8)
+    rotationConnection:Disconnect()
+    introGui:Destroy()
+end
+
+-- ==========================================
+-- SECTION 2: DELTA NOTIFICATIONS
+-- ==========================================
+local function runDeltaNotification()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "EpixIntro"
+    screenGui.Parent = CoreGui
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    local frame = Instance.new("Frame")
+    frame.Name = "MainFrame"
+    frame.Size = UDim2.new(0, 260, 0, 75)
+    frame.Position = UDim2.new(1, 50, 0.8, 0) 
+    frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    frame.BorderSizePixel = 0
+    frame.Parent = screenGui
+
+    local accent = Instance.new("Frame")
+    accent.Size = UDim2.new(0, 4, 1, 0)
+    accent.BackgroundColor3 = Color3.fromRGB(0, 255, 150)
+    accent.BorderSizePixel = 0
+    accent.Parent = frame
+
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 6)
+    uiCorner.Parent = frame
+
+    local title = Instance.new("TextLabel")
+    title.Text = "SCRIPT LOADED"
+    title.Size = UDim2.new(1, -20, 0, 30)
+    title.Position = UDim2.new(0, 15, 0.1, 0)
+    title.TextColor3 = Color3.fromRGB(0, 255, 150)
+    title.BackgroundTransparency = 1
+    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 14
+    title.Parent = frame
+
+    local credits = Instance.new("TextLabel")
+    credits.Text = "Made by EPIX and Gemini"
+    credits.Size = UDim2.new(1, -20, 0, 30)
+    credits.Position = UDim2.new(0, 15, 0.5, 0)
+    credits.TextColor3 = Color3.fromRGB(255, 255, 255)
+    credits.BackgroundTransparency = 1
+    credits.TextXAlignment = Enum.TextXAlignment.Left
+    credits.Font = Enum.Font.GothamMedium
+    credits.TextSize = 15
+    credits.Parent = frame
+
+    local slideIn = TweenService:Create(frame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(1, -280, 0.8, 0)
+    })
+    local slideOut = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {
+        Position = UDim2.new(1, 50, 0.8, 0)
+    })
+    
+    slideIn:Play()
+    task.wait(3.5)
+    slideOut:Play()
+    slideOut.Completed:Connect(function()
+        screenGui:Destroy()
+    end)
+end
+
+-- ==========================================
+-- EXECUTION FLOW
+-- ==========================================
+task.spawn(function()
+    runVoidIntro() -- Script 3 runs first
+    runDeltaNotification() -- Script 1 & 2 run after
+end)
+
+--!strict
+-- Advanced Compact Developer Console Hub
+-- Optimized for High-Resolution Developer-Only Workspaces
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Prevent duplication anomalies
+local oldGui = PlayerGui:FindFirstChild("NexusDevConsole_V2")
+if oldGui then oldGui:Destroy() end
+
+-- =============================================================================
+-- CENTRAL DATA SYSTEM
+-- =============================================================================
+type ScriptItem = {
+	Id: string,
+	Name: string,
+	Source: string,
+	Timestamp: number,
+	Group: string,
+}
+
+local AppState = {
+	ActiveTab = "Console",
+	SearchQuery = "",
+	SortMode = "Newest",
+	Scripts = {
+		{Id = "1", Name = "Server Memory Optimization", Source = "gcinfo()", Timestamp = 1717360000, Group = "Utilities"},
+		{Id = "2", Name = "Global Physics Sync", Source = "print('Physics verified')", Timestamp = 1717361000, Group = "Utilities"},
+		{Id = "3", Name = "Render Profiler Toggle", Source = "debug.profilebegin('Render')", Timestamp = 1717359000, Group = "Performance"},
+	} :: {ScriptItem},
+	Groups = {"Utilities", "Performance"} :: {string}
+}
+
+local Theme = {
+	Background = Color3.fromRGB(15, 16, 22),
+	Header = Color3.fromRGB(22, 24, 33),
+	Surface = Color3.fromRGB(28, 31, 43),
+	SurfaceSecondary = Color3.fromRGB(36, 40, 56),
+	Accent = Color3.fromRGB(0, 162, 255),
+	TextMain = Color3.fromRGB(240, 243, 248),
+	TextMuted = Color3.fromRGB(130, 142, 163),
+	CodeSyntax = Color3.fromRGB(120, 240, 155),
+	Danger = Color3.fromRGB(245, 80, 80),
+	Success = Color3.fromRGB(60, 220, 120)
+}
+
+local TweenInfoFast = TweenInfo.new(0.2, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out)
+
+-- =============================================================================
+-- BASE CORE COMPACT NODES
+-- =============================================================================
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "NexusDevConsole_V2"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = PlayerGui
+
+-- Main Panel Container (Resized to strict compact dimension metrics)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 560, 0, 360)
+MainFrame.Position = UDim2.new(0.5, -280, 0.5, -180)
+MainFrame.BackgroundColor3 = Theme.Background
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = ScreenGui
+
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 8)
+local MainStroke = Instance.new("UIStroke", MainFrame)
+MainStroke.Color = Theme.SurfaceSecondary
+MainStroke.Thickness = 1
+
+-- Header Bar
+local HeaderBar = Instance.new("Frame")
+HeaderBar.Name = "HeaderBar"
+HeaderBar.Size = UDim2.new(1, 0, 0, 42)
+HeaderBar.BackgroundColor3 = Theme.Header
+HeaderBar.BorderSizePixel = 0
+HeaderBar.Parent = MainFrame
+
+Instance.new("UICorner", HeaderBar).CornerRadius = UDim.new(0, 8)
+local HeaderHideBottom = Instance.new("Frame", HeaderBar)
+HeaderHideBottom.Size = UDim2.new(1, 0, 0, 8)
+HeaderHideBottom.Position = UDim2.new(0, 0, 1, -8)
+HeaderHideBottom.BackgroundColor3 = Theme.Header
+HeaderHideBottom.BorderSizePixel = 0
+
+local TitleLabel = Instance.new("TextLabel", HeaderBar)
+TitleLabel.Size = UDim2.new(0, 200, 1, 0)
+TitleLabel.Position = UDim2.new(0, 14, 0, 0)
+TitleLabel.Text = "⚡ NEXUS CONSOLE"
+TitleLabel.TextColor3 = Theme.TextMain
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.TextSize = 12
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.BackgroundTransparency = 1
+
+-- Control Window Utility Action Handles
+local WindowActions = Instance.new("Frame", HeaderBar)
+WindowActions.Size = UDim2.new(0, 70, 1, 0)
+WindowActions.Position = UDim2.new(1, -80, 0, 0)
+WindowActions.BackgroundTransparency = 1
+
+local ActionLayout = Instance.new("UIListLayout", WindowActions)
+ActionLayout.FillDirection = Enum.FillDirection.Horizontal
+ActionLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+ActionLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+ActionLayout.Padding = UDim.new(0, 8)
+
+local MinimizeBtn = Instance.new("TextButton", WindowActions)
+MinimizeBtn.Size = UDim2.new(0, 24, 0, 24)
+MinimizeBtn.BackgroundColor3 = Theme.Surface
+MinimizeBtn.Text = "—"
+MinimizeBtn.TextColor3 = Theme.TextMuted
+MinimizeBtn.Font = Enum.Font.GothamBold
+MinimizeBtn.TextSize = 9
+Instance.new("UICorner", MinimizeBtn).CornerRadius = UDim.new(0, 5)
+
+local CloseBtn = Instance.new("TextButton", WindowActions)
+CloseBtn.Size = UDim2.new(0, 24, 0, 24)
+CloseBtn.BackgroundColor3 = Theme.Surface
+CloseBtn.Text = "✕"
+CloseBtn.TextColor3 = Theme.TextMuted
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextSize = 10
+Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 5)
+
+-- System Quick Open Trigger Hub Frame
+local RestoreWidget = Instance.new("TextButton")
+RestoreWidget.Name = "RestoreWidget"
+RestoreWidget.Size = UDim2.new(0, 42, 0, 42)
+RestoreWidget.Position = UDim2.new(0, 20, 1, -62)
+RestoreWidget.BackgroundColor3 = Theme.Header
+RestoreWidget.Text = "⚡"
+RestoreWidget.TextSize = 16
+RestoreWidget.TextColor3 = Theme.Accent
+RestoreWidget.Visible = false
+RestoreWidget.Parent = ScreenGui
+Instance.new("UICorner", RestoreWidget).CornerRadius = UDim.new(0, 21)
+local WidgetStroke = Instance.new("UIStroke", RestoreWidget)
+WidgetStroke.Color = Theme.Accent
+WidgetStroke.Thickness = 1
+
+-- =============================================================================
+-- SYSTEM NAVIGATION LAYOUT CONTROL MATRIX
+-- =============================================================================
+local SidebarFrame = Instance.new("Frame", MainFrame)
+SidebarFrame.Size = UDim2.new(0, 140, 1, -42)
+SidebarFrame.Position = UDim2.new(0, 0, 0, 42)
+SidebarFrame.BackgroundColor3 = Theme.Header
+SidebarFrame.BorderSizePixel = 0
+
+local SidebarLayout = Instance.new("UIListLayout", SidebarFrame)
+SidebarLayout.Padding = UDim.new(0, 4)
+SidebarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+local SidebarPadding = Instance.new("UIPadding", SidebarFrame)
+SidebarPadding.PaddingTop = UDim.new(0, 10)
+
+local ConsoleTabBtn = Instance.new("TextButton", SidebarFrame)
+ConsoleTabBtn.Size = UDim2.new(0, 120, 0, 32)
+ConsoleTabBtn.BackgroundColor3 = Theme.Surface
+ConsoleTabBtn.Text = "  ⚡ Executor"
+ConsoleTabBtn.TextColor3 = Theme.TextMain
+ConsoleTabBtn.Font = Enum.Font.GothamBold
+ConsoleTabBtn.TextSize = 10
+ConsoleTabBtn.TextXAlignment = Enum.TextXAlignment.Left
+Instance.new("UICorner", ConsoleTabBtn).CornerRadius = UDim.new(0, 5)
+
+local WalletTabBtn = Instance.new("TextButton", SidebarFrame)
+WalletTabBtn.Size = UDim2.new(0, 120, 0, 32)
+WalletTabBtn.BackgroundTransparency = 1
+WalletTabBtn.Text = "  📂 Script Wallet"
+WalletTabBtn.TextColor3 = Theme.TextMuted
+WalletTabBtn.Font = Enum.Font.GothamBold
+WalletTabBtn.TextSize = 10
+WalletTabBtn.TextXAlignment = Enum.TextXAlignment.Left
+Instance.new("UICorner", WalletTabBtn).CornerRadius = UDim.new(0, 5)
+
+local DisplayStage = Instance.new("Frame", MainFrame)
+DisplayStage.Size = UDim2.new(1, -140, 1, -42)
+DisplayStage.Position = UDim2.new(0, 140, 0, 42)
+DisplayStage.BackgroundTransparency = 1
+
+-- =============================================================================
+-- CONSOLE PANEL VIEW LAYER
+-- =============================================================================
+local ConsoleView = Instance.new("Frame", DisplayStage)
+ConsoleView.Size = UDim2.new(1, 0, 1, 0)
+ConsoleView.BackgroundTransparency = 1
+Instance.new("UIPadding", ConsoleView).PaddingTop = UDim.new(0, 12)
+Instance.new("UIPadding", ConsoleView).PaddingLeft = UDim.new(0, 12)
+Instance.new("UIPadding", ConsoleView).PaddingRight = UDim.new(0, 12)
+Instance.new("UIPadding", ConsoleView).PaddingBottom = UDim.new(0, 12)
+
+local CodeBoxContainer = Instance.new("Frame", ConsoleView)
+CodeBoxContainer.Size = UDim2.new(1, 0, 1, -40)
+CodeBoxContainer.BackgroundColor3 = Theme.Surface
+CodeBoxContainer.BorderSizePixel = 0
+Instance.new("UICorner", CodeBoxContainer).CornerRadius = UDim.new(0, 6)
+
+local CodeTextBox = Instance.new("TextBox", CodeBoxContainer)
+CodeTextBox.Size = UDim2.new(1, -16, 1, -16)
+CodeTextBox.Position = UDim2.new(0, 8, 0, 8)
+CodeTextBox.BackgroundTransparency = 1
+CodeTextBox.Text = "-- Operational Workspace Sandbox Context\nprint(\"Nexus operational execution complete.\")"
+CodeTextBox.TextColor3 = Theme.CodeSyntax
+CodeTextBox.Font = Enum.Font.Code
+CodeTextBox.TextSize = 11
+CodeTextBox.MultiLine = true
+CodeTextBox.ClearTextOnFocus = false
+CodeTextBox.TextXAlignment = Enum.TextXAlignment.Left
+CodeTextBox.TextYAlignment = Enum.TextYAlignment.Top
+CodeTextBox.ClipsDescendants = true
+
+local ConsoleActionRow = Instance.new("Frame", ConsoleView)
+ConsoleActionRow.Size = UDim2.new(1, 0, 0, 32)
+ConsoleActionRow.Position = UDim2.new(0, 0, 1, -32)
+ConsoleActionRow.BackgroundTransparency = 1
+
+local ExecuteBtn = Instance.new("TextButton", ConsoleActionRow)
+ExecuteBtn.Size = UDim2.new(0, 100, 1, 0)
+ExecuteBtn.BackgroundColor3 = Theme.Success
+ExecuteBtn.Text = "Execute Run"
+ExecuteBtn.TextColor3 = Color3.fromRGB(15, 30, 20)
+ExecuteBtn.Font = Enum.Font.GothamBold
+ExecuteBtn.TextSize = 10
+Instance.new("UICorner", ExecuteBtn).CornerRadius = UDim.new(0, 5)
+
+local ClearBtn = Instance.new("TextButton", ConsoleActionRow)
+ClearBtn.Size = UDim2.new(0, 80, 1, 0)
+ClearBtn.Position = UDim2.new(0, 108, 0, 0)
+ClearBtn.BackgroundColor3 = Theme.Surface
+ClearBtn.Text = "Clear Buffer"
+ClearBtn.TextColor3 = Theme.TextMain
+ClearBtn.Font = Enum.Font.GothamBold
+ClearBtn.TextSize = 10
+Instance.new("UICorner", ClearBtn).CornerRadius = UDim.new(0, 5)
+
+-- =============================================================================
+-- WALLET PANEL VIEW LAYER
+-- =============================================================================
+local WalletView = Instance.new("Frame", DisplayStage)
+WalletView.Size = UDim2.new(1, 0, 1, 0)
+WalletView.BackgroundTransparency = 1
+WalletView.Visible = false
+Instance.new("UIPadding", WalletView).PaddingTop = UDim.new(0, 12)
+Instance.new("UIPadding", WalletView).PaddingLeft = UDim.new(0, 12)
+Instance.new("UIPadding", WalletView).PaddingRight = UDim.new(0, 12)
+Instance.new("UIPadding", WalletView).PaddingBottom = UDim.new(0, 12)
+
+local WalletHeaderBar = Instance.new("Frame", WalletView)
+WalletHeaderBar.Size = UDim2.new(1, 0, 0, 32)
+WalletHeaderBar.BackgroundTransparency = 1
+
+local SearchBar = Instance.new("TextBox", WalletHeaderBar)
+SearchBar.Size = UDim2.new(0, 170, 1, 0)
+SearchBar.BackgroundColor3 = Theme.Surface
+SearchBar.PlaceholderText = "🔍 Search index profiles..."
+SearchBar.Text = ""
+SearchBar.TextColor3 = Theme.TextMain
+SearchBar.PlaceholderColor3 = Theme.TextMuted
+SearchBar.Font = Enum.Font.Gotham
+SearchBar.TextSize = 10
+SearchBar.TextXAlignment = Enum.TextXAlignment.Left
+Instance.new("UICorner", SearchBar).CornerRadius = UDim.new(0, 5)
+Instance.new("UIPadding", SearchBar).PaddingLeft = UDim.new(0, 8)
+
+local WalletControls = Instance.new("Frame", WalletHeaderBar)
+WalletControls.Size = UDim2.new(1, -180, 1, 0)
+WalletControls.Position = UDim2.new(0, 180, 0, 0)
+WalletControls.BackgroundTransparency = 1
+
+local WalletControlsLayout = Instance.new("UIListLayout", WalletControls)
+WalletControlsLayout.FillDirection = Enum.FillDirection.Horizontal
+WalletControlsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+WalletControlsLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+WalletControlsLayout.Padding = UDim.new(0, 6)
+
+local SaveModalOpenBtn = Instance.new("TextButton", WalletControls)
+SaveModalOpenBtn.Size = UDim2.new(0, 95, 1, 0)
+SaveModalOpenBtn.BackgroundColor3 = Theme.Accent
+SaveModalOpenBtn.Text = "➕ Commit Token"
+SaveModalOpenBtn.TextColor3 = Theme.TextMain
+SaveModalOpenBtn.Font = Enum.Font.GothamBold
+SaveModalOpenBtn.TextSize = 9
+Instance.new("UICorner", SaveModalOpenBtn).CornerRadius = UDim.new(0, 5)
+
+local SortToggleBtn = Instance.new("TextButton", WalletControls)
+SortToggleBtn.Size = UDim2.new(0, 85, 1, 0)
+SortToggleBtn.BackgroundColor3 = Theme.Surface
+SortToggleBtn.Text = "🔀 Sort: Newest"
+SortToggleBtn.TextColor3 = Theme.TextMain
+SortToggleBtn.Font = Enum.Font.GothamMedium
+SortToggleBtn.TextSize = 9
+Instance.new("UICorner", SortToggleBtn).CornerRadius = UDim.new(0, 5)
+
+local ListScrollContainer = Instance.new("ScrollingFrame", WalletView)
+ListScrollContainer.Size = UDim2.new(1, 0, 1, -42)
+ListScrollContainer.Position = UDim2.new(0, 0, 0, 42)
+ListScrollContainer.BackgroundTransparency = 1
+ListScrollContainer.BorderSizePixel = 0
+ListScrollContainer.ScrollBarThickness = 3
+ListScrollContainer.ScrollBarImageColor3 = Theme.SurfaceSecondary
+
+local ListScrollLayout = Instance.new("UIListLayout", ListScrollContainer)
+ListScrollLayout.Padding = UDim.new(0, 6)
+
+-- =============================================================================
+-- DIALOG MODAL FRAME CREATOR
+-- =============================================================================
+local CreationModalFrame = Instance.new("Frame", MainFrame)
+CreationModalFrame.Size = UDim2.new(0, 280, 0, 220)
+CreationModalFrame.Position = UDim2.new(0.5, -140, 0.5, -110)
+CreationModalFrame.BackgroundColor3 = Theme.Surface
+CreationModalFrame.Visible = false
+CreationModalFrame.ZIndex = 5
+Instance.new("UICorner", CreationModalFrame).CornerRadius = UDim.new(0, 6)
+Instance.new("UIStroke", CreationModalFrame).Color = Theme.Accent
+
+local ModalTitle = Instance.new("TextLabel", CreationModalFrame)
+ModalTitle.Size = UDim2.new(1, 0, 0, 30)
+ModalTitle.Position = UDim2.new(0, 12, 0, 0)
+ModalTitle.Text = "Commit Registry Asset Record"
+ModalTitle.TextColor3 = Theme.TextMain
+ModalTitle.Font = Enum.Font.GothamBold
+ModalTitle.TextSize = 10
+ModalTitle.TextXAlignment = Enum.TextXAlignment.Left
+ModalTitle.BackgroundTransparency = 1
+
+local ModalNameInput = Instance.new("TextBox", CreationModalFrame)
+ModalNameInput.Size = UDim2.new(1, -24, 0, 28)
+ModalNameInput.Position = UDim2.new(0, 12, 0, 36)
+ModalNameInput.BackgroundColor3 = Theme.Background
+ModalNameInput.PlaceholderText = "Asset Ident Token Name"
+ModalNameInput.Text = ""
+ModalNameInput.TextColor3 = Theme.TextMain
+ModalNameInput.Font = Enum.Font.Gotham
+ModalNameInput.TextSize = 10
+Instance.new("UICorner", ModalNameInput).CornerRadius = UDim.new(0, 4)
+
+local ModalGroupInput = Instance.new("TextBox", CreationModalFrame)
+ModalGroupInput.Size = UDim2.new(1, -24, 0, 28)
+ModalGroupInput.Position = UDim2.new(0, 12, 0, 70)
+ModalGroupInput.BackgroundColor3 = Theme.Background
+ModalGroupInput.PlaceholderText = "Target Cluster Directory Folder Group"
+ModalGroupInput.Text = ""
+ModalGroupInput.TextColor3 = Theme.TextMain
+ModalGroupInput.Font = Enum.Font.Gotham
+ModalGroupInput.TextSize = 10
+Instance.new("UICorner", ModalGroupInput).CornerRadius = UDim.new(0, 4)
+
+local ModalSourceInput = Instance.new("TextBox", CreationModalFrame)
+ModalSourceInput.Size = UDim2.new(1, -24, 0, 54)
+ModalSourceInput.Position = UDim2.new(0, 12, 0, 104)
+ModalSourceInput.BackgroundColor3 = Theme.Background
+ModalSourceInput.PlaceholderText = "-- Script environment code stream payload"
+ModalSourceInput.Text = ""
+ModalSourceInput.TextColor3 = Theme.CodeSyntax
+ModalSourceInput.Font = Enum.Font.Code
+ModalSourceInput.TextSize = 10
+ModalSourceInput.MultiLine = true
+Instance.new("UICorner", ModalSourceInput).CornerRadius = UDim.new(0, 4)
+
+local ModalCancelBtn = Instance.new("TextButton", CreationModalFrame)
+ModalCancelBtn.Size = UDim2.new(0, 70, 0, 26)
+ModalCancelBtn.Position = UDim2.new(0, 12, 1, -34)
+ModalCancelBtn.BackgroundColor3 = Theme.Background
+ModalCancelBtn.Text = "Cancel"
+ModalCancelBtn.TextColor3 = Theme.TextMuted
+ModalCancelBtn.Font = Enum.Font.GothamBold
+ModalCancelBtn.TextSize = 10
+Instance.new("UICorner", ModalCancelBtn).CornerRadius = UDim.new(0, 4)
+
+local ModalSaveBtn = Instance.new("TextButton", CreationModalFrame)
+ModalSaveBtn.Size = UDim2.new(0, 90, 0, 26)
+ModalSaveBtn.Position = UDim2.new(1, -102, 1, -34)
+ModalSaveBtn.BackgroundColor3 = Theme.Success
+ModalSaveBtn.Text = "Save Manifest"
+ModalSaveBtn.TextColor3 = Color3.fromRGB(0,0,0)
+ModalSaveBtn.Font = Enum.Font.GothamBold
+ModalSaveBtn.TextSize = 10
+Instance.new("UICorner", ModalSaveBtn).CornerRadius = UDim.new(0, 4)
+
+-- =============================================================================
+-- INTELLIGENT WALLET FOLDER ARCHIVE PACKAGER
+-- =============================================================================
+local StructuralGroupExpansion: {[string]: boolean} = {}
+
+local function RefreshWalletHierarchies()
+	for _, node in ipairs(ListScrollContainer:GetChildren()) do
+		if node:IsA("Frame") then node:Destroy() end
+	end
+
+	local FilteredPipeline = {}
+	for _, element in ipairs(AppState.Scripts) do
+		table.insert(FilteredPipeline, element)
+	end
+
+	if AppState.SortMode == "A-Z" then
+		table.sort(FilteredPipeline, function(a,b) return a.Name:lower() < b.Name:lower() end)
+	elseif AppState.SortMode == "Oldest" then
+		table.sort(FilteredPipeline, function(a,b) return a.Timestamp < b.Timestamp end)
+	else
+		table.sort(FilteredPipeline, function(a,b) return a.Timestamp > b.Timestamp end)
+	end
+
+	local SortedDirectories: {[string]: {ScriptItem}} = {}
+	for _, folder in ipairs(AppState.Groups) do SortedDirectories[folder] = {} end
+	SortedDirectories["Unassigned"] = {}
+
+	for _, item in ipairs(FilteredPipeline) do
+		if AppState.SearchQuery ~= "" and not string.find(item.Name:lower(), AppState.SearchQuery:lower()) then continue end
+		local chosenFolder = (item.Group ~= "" and table.find(AppState.Groups, item.Group)) and item.Group or "Unassigned"
+		table.insert(SortedDirectories[chosenFolder], item)
+	end
+
+	for folderLabel, entries in pairs(SortedDirectories) do
+		if #entries == 0 and folderLabel == "Unassigned" then continue end
+		if StructuralGroupExpansion[folderLabel] == nil then StructuralGroupExpansion[folderLabel] = true end
+		local expanded = StructuralGroupExpansion[folderLabel]
+
+		local FolderRow = Instance.new("Frame", ListScrollContainer)
+		FolderRow.Size = UDim2.new(1, -8, 0, 28)
+		FolderRow.BackgroundColor3 = Theme.Surface
+		Instance.new("UICorner", FolderRow).CornerRadius = UDim.new(0, 4)
+
+		local FolderToggleTrigger = Instance.new("TextButton", FolderRow)
+		FolderToggleTrigger.Size = UDim2.new(1, 0, 1, 0)
+		FolderToggleTrigger.BackgroundTransparency = 1
+		FolderToggleTrigger.Text = (expanded and "  ▼  " or "  ▶  ") .. folderLabel:upper() .. " (" .. tostring(#entries) .. ")"
+		FolderToggleTrigger.TextColor3 = Theme.Accent
+		FolderToggleTrigger.Font = Enum.Font.GothamBold
+		FolderToggleTrigger.TextSize = 9
+		FolderToggleTrigger.TextXAlignment = Enum.TextXAlignment.Left
+
+		FolderToggleTrigger.Activated:Connect(function()
+			StructuralGroupExpansion[folderLabel] = not StructuralGroupExpansion[folderLabel]
+			RefreshWalletHierarchies()
+		end)
+
+		if expanded then
+			for _, coreScript in ipairs(entries) do
+				local AssetRow = Instance.new("Frame", ListScrollContainer)
+				AssetRow.Size = UDim2.new(1, -8, 0, 36)
+				AssetRow.BackgroundColor3 = Theme.SurfaceSecondary
+				Instance.new("UICorner", AssetRow).CornerRadius = UDim.new(0, 4)
+
+				local AssetTitle = Instance.new("TextLabel", AssetRow)
+				AssetTitle.Size = UDim2.new(0.5, 0, 1, 0)
+				AssetTitle.Position = UDim2.new(0, 12, 0, 0)
+				AssetTitle.Text = coreScript.Name
+				AssetTitle.TextColor3 = Theme.TextMain
+				AssetTitle.Font = Enum.Font.GothamBold
+				AssetTitle.TextSize = 10
+				AssetTitle.TextXAlignment = Enum.TextXAlignment.Left
+				AssetTitle.BackgroundTransparency = 1
+
+				local ActionButtonBox = Instance.new("Frame", AssetRow)
+				ActionButtonBox.Size = UDim2.new(0, 120, 1, 0)
+				ActionButtonBox.Position = UDim2.new(1, -125, 0, 0)
+				ActionButtonBox.BackgroundTransparency = 1
+
+				local RowLayout = Instance.new("UIListLayout", ActionButtonBox)
+				RowLayout.FillDirection = Enum.FillDirection.Horizontal
+				
